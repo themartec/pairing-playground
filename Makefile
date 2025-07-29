@@ -42,12 +42,16 @@ format-check:
 test-unit:
 	npm run test:unit
 
+.PHONY: test-a11y
+test-a11y:
+	npm run test:a11y
+
 .PHONY: test-e2e
 test-e2e:
 	npm run test:e2e
 
 .PHONY: build
-build: check install lint format-check test-unit
+build: check install lint format-check test-unit test-a11y
 	@echo
 	@echo "✅ ${GREEN}Success${RESET} you are ready to ${BOLD}${MAGENTA}PAIR 🍐 🤘${RESET}\n"
 
