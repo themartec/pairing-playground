@@ -16,5 +16,20 @@ export default defineConfig({
       "**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build}.config.*",
       "src/setupTests.ts",
     ],
+    coverage: {
+      provider: "v8",
+      exclude: [
+        "*.config.{ts,js}", // Excludes all config files
+        ".*.{ts,js}", // Excludes all hidden files
+        "**/*.styles.ts", // Excludes all style files
+      ],
+      all: true,
+      thresholds: {
+        lines: 90,
+        functions: 90,
+        branches: 90,
+        statements: 90,
+      },
+    },
   },
 });
