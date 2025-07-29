@@ -458,3 +458,43 @@ Add a custom config provider
   ...
 </ConfigProvider>
 ```
+
+## 12. Coverage reporting
+
+install vitest coverage with `v8`
+
+```sh
+npm install --save-dev @vitest/coverage-v8
+```
+
+and some configuration to `vitest.config.ts`
+
+```typescript
+coverage: {
+  provider: "v8",
+  exclude: [
+    "*.config.{ts,js}", // Excludes all config files
+    ".*.{ts,js}", // Excludes all hidden files
+    "**/*.styles.ts", // Excludes all style files
+  ],
+  all: true,
+  thresholds: {
+    lines: 90,
+    functions: 90,
+    branches: 90,
+    statements: 90,
+  },
+},
+```
+
+add a test runner including coverage `npm run test:unit:coverage`
+
+```sh
+# npm run lint
+echo $(jq '.scripts["test:unit:coverage"]="vitest run --coverage"' package.json) | jq . \
+ | > package_new.json && mv package{\_new,}.json
+```
+
+and update the `make build` to use it in the `Makefile`
+
+NOTE: _this also requires that you have sufficent coverage to pass the build_
