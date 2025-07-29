@@ -421,3 +421,40 @@ const { container } = render(<LandingPage />);
 const results = await axe(container);
 expect(results).toHaveNoViolations();
 ```
+
+## 11. UI Styling
+
+Add https://ant.design/
+
+```sh
+# Ant Design
+npm install antd
+
+# and styled components
+npm install styled-components
+npm install --save-dev @types/styled-components
+```
+
+Required fix for using antd with React 19
+https://ant.design/docs/react/v5-for-19
+
+```sh
+npm install --save \
+  @ant-design/v5-patch-for-react-19
+```
+
+Add a custom config provider
+
+```typescript
+<ConfigProvider
+  theme={{
+    token: {
+      colorPrimary: "#91DBB6",
+      colorBgLayout: "#FEF9ED",
+    },
+    algorithm: theme.defaultAlgorithm,
+  }}
+>
+  ...
+</ConfigProvider>
+```

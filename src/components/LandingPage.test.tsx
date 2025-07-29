@@ -1,8 +1,10 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { expect, describe, it } from "vitest";
+import { expect, describe, it, vi } from "vitest";
 import LandingPage from "./LandingPage";
+
+vi.mock("antd", () => vi.importActual("antd"));
 
 describe("LandingPage", () => {
   it("renders the main title", () => {

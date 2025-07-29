@@ -99,6 +99,11 @@ make full-build
 
 This is what is run by the GitHub Actions.
 
+#### 7. Styling
+
+This repo uses `ant.design` https://ant.design/docs/react/introduce and has
+styled components configured as well.
+
 ## Setup
 
 The full setup is documented here
