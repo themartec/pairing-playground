@@ -202,3 +202,109 @@ npm run dev
 open http://localhost:5173/
 curl http://localhost:5173/api/health
 ```
+
+## 9. Linting & Formatting
+
+install ESLint
+
+```sh
+npm install --save-dev \
+    eslint \
+    eslint-config-airbnb \
+    eslint-plugin-import \
+    eslint-plugin-react \
+    eslint-plugin-react-hooks \
+    eslint-plugin-jsx-a11y \
+    eslint-config-airbnb-typescript \
+    @typescript-eslint/eslint-plugin \
+    @typescript-eslint/parser
+```
+
+**NOTE:** may need to downgrade typescript to `>=4.7.4 <5.6.0` as supported by
+`@typescript-eslint/typescript-estree.`
+
+```sh
+  # in package.json
+  "devDependencies": {
+    ...
+    "typescript": "<5.6",
+
+npm install
+```
+
+and `prettier` for **Formatting**
+
+```sh
+npm install --save-dev \
+    prettier \
+    eslint-config-prettier
+```
+
+add some `.eslintrc.js` configuration
+
+```sh
+cat <<EOF > .eslintrc.js
+module.exports = {
+  extends: [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "airbnb",
+    "airbnb-typescript",
+    "prettier", // Must be the last item
+  ],
+  parserOptions: {
+    project: "./tsconfig.json",
+  },
+  rules: {
+    "react/react-in-jsx-scope": "off",
+  },
+};
+EOF
+```
+
+and some `.tsconfig.json` configuration
+
+```sh
+cat <<EOF > tsconfig.json
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["src", "vite.config.js"]
+}
+EOF
+```
+
+add script to run `lint` and `format`
+
+```sh
+# npm run lint
+echo $(jq '.scripts.lint="eslint ."' package.json) | jq . \
+ | > package_new.json && mv package{\_new,}.json
+
+# npm run lint:fix
+echo $(jq '.scripts["lint:fix"]="eslint . --fix"' package.json) | jq . \
+ | > package_new.json && mv package{\_new,}.json
+
+# npm run format
+echo $(jq '.scripts.format="prettier --write ."' package.json) | jq . \
+ | > package_new.json && mv package{\_new,}.json
+
+# npm run format:check
+echo $(jq '.scripts["format:check"]="prettier --check ."' package.json) | jq . \
+ | > package_new.json && mv package{\_new,}.json
+```
