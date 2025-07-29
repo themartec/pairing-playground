@@ -30,10 +30,18 @@ check:
 install:
 	npm install
 
+.PHONY: lint
+lint:
+	npm run lint
+
+.PHONY: format-check
+format-check:
+	npm run format:check
+
 .PHONY: build
-build: check install
+build: check install lint format-check
 	@echo
-	@echo "${YELLOW}TODO${RESET} add some build steps like formatting, linting, testing etc"
+	@echo "${YELLOW}TODO${RESET} add some testing 🧪"
 	@echo
 	@echo "✅ ${GREEN}Success${RESET} you are ready to ${BOLD}${MAGENTA}PAIR 🍐 🤘${RESET}\n"
 
@@ -44,5 +52,5 @@ usage:
 	@echo
 	@echo "${YELLOW}make${RESET}                     this handy usage guide"
 	@echo
-	@echo "${YELLOW}make build${RESET}               run the build"
+	@echo "${YELLOW}make build${RESET}               full build"
 	@echo
