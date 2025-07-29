@@ -404,3 +404,20 @@ and update gitbuild scripts and run the E2E in a separate GitHub Action Task
 ```sh
 .github/workflows/tests.yml
 ```
+
+### A11y (Accessibility) testing
+
+```sh
+npm install --save-dev \
+  jest-axe \
+  @types/jest-axe
+```
+
+and write a test `src/components/LandingPage.a11y.test.tsx`
+
+```sh
+const { container } = render(<LandingPage />);
+
+const results = await axe(container);
+expect(results).toHaveNoViolations();
+```
