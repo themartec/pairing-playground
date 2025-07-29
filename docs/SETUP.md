@@ -421,3 +421,33 @@ const { container } = render(<LandingPage />);
 const results = await axe(container);
 expect(results).toHaveNoViolations();
 ```
+
+## 11. UI Styling
+
+Add https://ant.design/
+
+```sh
+# Ant Design
+npm install antd
+npm install --save-dev @types/antd
+
+# and styled components
+npm install styled-components
+npm install --save-dev @types/styled-components
+```
+
+add a global style
+
+```sh
+src/App.styles.ts
+```
+
+and other styling as required
+
+You may also need to run a fix for react 19
+https://ant.design/docs/react/v5-for-19
+
+```sh
+npm install --save \
+  @ant-design/v5-patch-for-react-19
+```
