@@ -153,3 +153,52 @@ also `.github/workflows/tests.yml`
 git init
 git commit -m "React/Express app 🎉"
 ```
+
+## 8. Add basic API call
+
+A basic health check at `src/api/healthCheckHandler.ts`
+
+```sh
+mkdir src/api
+
+cat <<EOF > src/api/healthCheckHandler.ts
+const healthCheckHandler = (_req: Request, res: any) => {
+  res.json({ status: "ok", timestamp: new Date().toISOString() });
+};
+
+export default healthCheckHandler;
+EOF
+```
+
+update `vite.config.ts` to proxy API requests
+
+```javascript
+// create express app
+const app = express();
+app.use(express.json());
+
+// API Routes
+app.get("/api/health", healthCheckHandler);
+
+// Proxy config to let Vite know about our API routes
+const proxy = {
+  "/api": {}, // proxy our /api route to nowhere (handled by middleware)
+};
+
+// setup expressPlugin to deal with API proxy
+function expressPlugin() {
+  ...
+}
+
+export default defineConfig({
+ plugins: [expressPlugin(), react()],
+});
+```
+
+test it
+
+```sh
+npm run dev
+open http://localhost:5173/
+curl http://localhost:5173/api/health
+```
