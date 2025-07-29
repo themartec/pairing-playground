@@ -5,7 +5,12 @@
 ## TL;DR
 
 ```sh
-make && make build
+git clone git@github.com:themartec/pairing-playground.git
+cd pairing-playground
+
+nvm use
+make                # show usage instructions
+make full-build     # run full build including E2E tests
 ```
 
 ---
