@@ -38,10 +38,12 @@ lint:
 format-check:
 	npm run format:check
 
+.PHONY: test-unit
+test-unit:
+	npm run test:unit
+
 .PHONY: build
-build: check install lint format-check
-	@echo
-	@echo "${YELLOW}TODO${RESET} add some testing 🧪"
+build: check install lint format-check test-unit
 	@echo
 	@echo "✅ ${GREEN}Success${RESET} you are ready to ${BOLD}${MAGENTA}PAIR 🍐 🤘${RESET}\n"
 
