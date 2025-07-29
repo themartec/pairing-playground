@@ -42,8 +42,17 @@ format-check:
 test-unit:
 	npm run test:unit
 
+.PHONY: test-e2e
+test-e2e:
+	npm run test:e2e
+
 .PHONY: build
 build: check install lint format-check test-unit
+	@echo
+	@echo "✅ ${GREEN}Success${RESET} you are ready to ${BOLD}${MAGENTA}PAIR 🍐 🤘${RESET}\n"
+
+.PHONY: full-build
+full-build: build test-e2e
 	@echo
 	@echo "✅ ${GREEN}Success${RESET} you are ready to ${BOLD}${MAGENTA}PAIR 🍐 🤘${RESET}\n"
 
@@ -54,5 +63,6 @@ usage:
 	@echo
 	@echo "${YELLOW}make${RESET}                     this handy usage guide"
 	@echo
-	@echo "${YELLOW}make build${RESET}               full build"
+	@echo "${YELLOW}make build${RESET}               basic build"
+	@echo "${YELLOW}make full-build${RESET}          full build including e2e tests"
 	@echo

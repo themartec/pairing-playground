@@ -18,6 +18,8 @@
   },
   "include": [
     "src",
+    "e2e",
+    "playwright.config.ts",
     "vite.config.js",
     "vitest.config.ts",
     ".eslintrc.js",
