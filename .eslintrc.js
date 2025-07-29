@@ -9,7 +9,7 @@ module.exports = {
   parserOptions: {
     project: "./tsconfig.json",
   },
-  ignorePatterns: ["playwright-report/**", "test-results/**"],
+  ignorePatterns: ["playwright-report/**", "test-results/**", "coverage/**"],
   rules: {
     "react/react-in-jsx-scope": "off",
   },

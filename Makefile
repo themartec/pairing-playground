@@ -40,7 +40,7 @@ format-check:
 
 .PHONY: test-unit
 test-unit:
-	npm run test:unit
+	npm run test:unit:coverage
 
 .PHONY: test-a11y
 test-a11y:
