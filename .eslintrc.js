@@ -14,7 +14,12 @@ module.exports = {
   },
   overrides: [
     {
-      files: ["vite.config.js", "**/*.test.{js,jsx,ts,tsx}"],
+      files: [
+        "vite.config.js",
+        "vitest.config.ts",
+        "**/*.test.{js,jsx,ts,tsx}",
+        "**/setupTests.{js,ts,tsx}",
+      ],
       rules: {
         "import/no-extraneous-dependencies": [
           "error",

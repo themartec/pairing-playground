@@ -308,3 +308,45 @@ echo $(jq '.scripts.format="prettier --write ."' package.json) | jq . \
 echo $(jq '.scripts["format:check"]="prettier --check ."' package.json) | jq . \
  | > package_new.json && mv package{\_new,}.json
 ```
+
+## 10. Testing
+
+### Unit Testing
+
+using `vitest` which is similar to `Jest` but easier to setup with `vite`,
+`typescript` and `.tsx` files.
+
+```sh
+npm install --save-dev \
+    vitest \
+    @vitest/ui \
+    jsdom \
+    @testing-library/react \
+    @testing-library/jest-dom
+```
+
+add `test` scripts to `package.json`
+
+```sh
+# npm test
+echo $(jq '.scripts.test="vitest"' package.json) | jq . \
+ | > package_new.json && mv package{\_new,}.json
+
+# npm run test:unit
+echo $(jq '.scripts["test:unit"]="vitest --run"' package.json) | jq . \
+ | > package_new.json && mv package{\_new,}.json
+```
+
+A basic testing `src/components/LandingPage.test.tsx`
+
+a `vitest.config.ts` and `src/setupTests.ts` file
+
+and update the `Makefile` and now you can run
+
+```sh
+npm test
+npm run test:unit
+
+# full build script
+make build
+```
