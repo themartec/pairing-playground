@@ -46,4 +46,32 @@ test.describe("Landing Page E2E", () => {
     // Verify no console errors occurred
     expect(consoleErrors).toEqual([]);
   });
+
+  test("should submit form and display response", async ({ page }) => {
+    await page.goto("/");
+
+    // Find and fill the message textarea
+    const messageField = page.locator('textarea[id*="message"]');
+    await expect(messageField).toBeVisible();
+    await messageField.fill("This is a test message");
+
+    // Submit the form
+    await page.getByRole("button", { name: "Submit" }).click();
+
+    // Wait for the response to appear
+    await expect(page.getByText("Response:")).toBeVisible();
+
+    // Verify the response contains expected data
+    const responseSection = page.locator("pre");
+    await expect(responseSection).toBeVisible();
+
+    // Check that the response contains the expected fields
+    const responseText = await responseSection.textContent();
+    const response = JSON.parse(responseText || "{}");
+
+    expect(response.success).toBe(true);
+    expect(response.message).toBe("Form submitted successfully!");
+    expect(response.submissionId).toBeDefined();
+    expect(response.data.message).toBe("This is a test message");
+  });
 });
