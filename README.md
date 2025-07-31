@@ -24,13 +24,13 @@ a backend using `Express` and runs on `vite`.
 
 ```sh
 # run development server
-nvm run dev
+npm run dev
 
 # open in browser
-open http://localhost:5174/
+open http://localhost:5173/
 
 # or curl the API
-curl http://localhost:5174/api/health
+curl http://localhost:5173/api/health
 ```
 
 ### Developer tools
