@@ -10,19 +10,29 @@ describe("apiErrorAndDelaySimulator", () => {
 
   beforeEach(() => {
     mockNext = vi.fn();
-    mockReq = { body: {} } as any;
+    mockReq = { body: {}, url: "/api/test" } as any;
     mockRes = { json: vi.fn(), status: vi.fn().mockReturnThis() } as any;
     consoleLogSpy = vi.spyOn(console, "log").mockImplementation(() => {});
   });
 
-  it("calls next", async () => {
+  it("calls next for /api/ endpoints", async () => {
+    mockReq.url = "/api/submit";
     await apiErrorAndDelaySimulator(mockReq, mockRes, mockNext);
     expect(mockNext).toHaveBeenCalledOnce();
+  });
+
+  it("skips simulation for non-/api/ endpoints", async () => {
+    mockReq.url = "/some-other-endpoint";
+    await apiErrorAndDelaySimulator(mockReq, mockRes, mockNext);
+    expect(mockNext).toHaveBeenCalledOnce();
+    expect(mockRes.status).not.toHaveBeenCalled();
+    expect(mockRes.json).not.toHaveBeenCalled();
   });
 
   describe("when API_FAILURE_RATE is set", () => {
     beforeEach(() => {
       process.env.API_FAILURE_RATE = "1.0"; // 100% failure rate
+      mockReq.url = "/api/submit"; // Ensure it's an API endpoint
     });
 
     afterEach(() => {
@@ -30,11 +40,12 @@ describe("apiErrorAndDelaySimulator", () => {
       consoleLogSpy.mockRestore();
     });
 
-    it("simulates an error based on failure rate", async () => {
+    it("simulates an error based on failure rate for /api/ endpoints", async () => {
       const mockResConst = {
         json: vi.fn(),
         status: vi.fn().mockReturnThis(),
       } as any;
+      mockReq.url = "/api/submit";
       await apiErrorAndDelaySimulator(mockReq, mockResConst, mockNext);
 
       const response = mockResConst.json.mock.calls[0][0];
@@ -46,13 +57,24 @@ describe("apiErrorAndDelaySimulator", () => {
       });
     });
 
-    it("does not call nex if it fails", async () => {
+    it("does not call next if it fails on /api/ endpoints", async () => {
+      mockReq.url = "/api/submit";
       await apiErrorAndDelaySimulator(mockReq, mockRes, mockNext);
 
       expect(mockNext).not.toHaveBeenCalledOnce();
     });
 
-    it("logs an error message to the console", async () => {
+    it("does not simulate failure for non-/api/ endpoints even with failure rate set", async () => {
+      mockReq.url = "/some-page";
+      await apiErrorAndDelaySimulator(mockReq, mockRes, mockNext);
+
+      expect(mockNext).toHaveBeenCalledOnce();
+      expect(mockRes.status).not.toHaveBeenCalled();
+      expect(mockRes.json).not.toHaveBeenCalled();
+    });
+
+    it("logs an error message to the console for /api/ endpoints", async () => {
+      mockReq.url = "/api/submit";
       await apiErrorAndDelaySimulator(mockReq, mockRes, mockNext);
 
       expect(consoleLogSpy).toHaveBeenCalledWith("❌ Simulated API failure");
@@ -63,6 +85,7 @@ describe("apiErrorAndDelaySimulator", () => {
     let setTimeoutSpy: any;
     beforeEach(() => {
       process.env.API_DELAY = "1000"; // 1 second delay
+      mockReq.url = "/api/submit"; // Ensure it's an API endpoint
       setTimeoutSpy = vi
         .spyOn(global, "setTimeout")
         .mockImplementation((fn) => {
@@ -77,11 +100,19 @@ describe("apiErrorAndDelaySimulator", () => {
       consoleLogSpy.mockRestore();
     });
 
-    it("adds a delay using setTimeout for 1000ms", async () => {
+    it("adds a delay using setTimeout for 1000ms on /api/ endpoints", async () => {
+      mockReq.url = "/api/submit";
       await apiErrorAndDelaySimulator(mockReq, mockRes, mockNext);
 
       expect(setTimeoutSpy).toHaveBeenCalledWith(expect.any(Function), 1000);
+      expect(mockNext).toHaveBeenCalledOnce();
+    });
 
+    it("does not add delay for non-/api/ endpoints", async () => {
+      mockReq.url = "/some-page";
+      await apiErrorAndDelaySimulator(mockReq, mockRes, mockNext);
+
+      expect(setTimeoutSpy).not.toHaveBeenCalled();
       expect(mockNext).toHaveBeenCalledOnce();
     });
   });
