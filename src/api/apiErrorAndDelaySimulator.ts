@@ -1,10 +1,15 @@
 import { NextFunction, Request, Response } from "express";
 
 const apiErrorAndDelaySimulator = async (
-  _req: Request,
+  req: Request,
   res: Response,
   next: NextFunction,
 ) => {
+  // Only apply to /api/ endpoints
+  if (!req.url.startsWith("/api/")) {
+    return next();
+  }
+
   if (process.env.API_FAILURE_RATE) {
     const failureRate = parseFloat(process.env.API_FAILURE_RATE);
 
