@@ -1,10 +1,10 @@
-import { useState } from "react";
-import Layout from "antd/es/layout";
-import theme from "antd/es/theme";
-import Form from "antd/es/form";
-import TextArea from "antd/es/input/TextArea";
-import Button from "antd/es/button";
-import StyledContent from "./LandingPage.styles";
+import { useState } from 'react';
+import Layout from 'antd/es/layout';
+import theme from 'antd/es/theme';
+import Form from 'antd/es/form';
+import TextArea from 'antd/es/input/TextArea';
+import StyledContent from './LandingPage.styles';
+import { Button } from 'antd';
 
 interface ResponseBody {
   success: boolean;
@@ -18,15 +18,13 @@ export default function LandingPage() {
   } = theme.useToken();
 
   const [form] = Form.useForm();
-  const [submitResponse, setSubmitResponse] = useState<ResponseBody | null>(
-    null,
-  );
+  const [submitResponse, setSubmitResponse] = useState<ResponseBody | null>(null);
 
   const onFinish = async (formData: { message: string }) => {
-    const response = await fetch("/api/submit", {
-      method: "POST",
+    const response = await fetch('/api/submit', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(formData),
     });
@@ -34,10 +32,8 @@ export default function LandingPage() {
   };
   return (
     <Layout>
-      <StyledContent
-        background={colorBgContainer}
-        borderradius={borderRadiusLG}
-      >
+      <Button type="primary">Loki button</Button>
+      <StyledContent background={colorBgContainer} borderradius={borderRadiusLG}>
         <h1>Pairing Playground</h1>
         <h2>This is where the magic happens</h2>
         {submitResponse && (
