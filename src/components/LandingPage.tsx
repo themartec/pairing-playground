@@ -1,10 +1,10 @@
 import { useState } from 'react';
+import { Button } from 'antd';
 import Layout from 'antd/es/layout';
 import theme from 'antd/es/theme';
 import Form from 'antd/es/form';
 import TextArea from 'antd/es/input/TextArea';
 import StyledContent from './LandingPage.styles';
-import { Button } from 'antd';
 
 interface ResponseBody {
   success: boolean;
