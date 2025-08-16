@@ -498,3 +498,22 @@ echo $(jq '.scripts["test:unit:coverage"]="vitest run --coverage"' package.json)
 and update the `make build` to use it in the `Makefile`
 
 NOTE: _this also requires that you have sufficent coverage to pass the build_
+
+## 13. API Error and Delay simulator
+
+Add the ability to slow down or force error in API responses
+
+```sh
+# in vite.config.js
+app.use(apiErrorAndDelaySimulator);
+```
+
+can be run with environment variables `API_DELAY` and/or `API_FAILURE_RATE`
+
+```sh
+# add a 1 second delay
+API_DELAY=1000 npm run dev
+
+# 50% failure rate
+API_FAILURE_RATE=0.5 npm run dev
+```
