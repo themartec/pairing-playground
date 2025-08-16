@@ -2,6 +2,7 @@ import react from "@vitejs/plugin-react";
 import express from "express";
 import { defineConfig } from "vite";
 import healthCheckHandler from "./src/api/healthCheckHandler";
+import dataSubmitHandler from "./src/api/dataSubmitHandler";
 import apiErrorAndDelaySimulator from "./src/api/apiErrorAndDelaySimulator";
 
 const app = express();
@@ -10,6 +11,7 @@ app.use(apiErrorAndDelaySimulator);
 
 // API Routes
 app.get("/api/health", healthCheckHandler);
+app.post("/api/submit", dataSubmitHandler);
 
 // Proxy config to let Vite know about our API routes
 const proxy = {
