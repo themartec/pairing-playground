@@ -517,3 +517,26 @@ API_DELAY=1000 npm run dev
 # 50% failure rate
 API_FAILURE_RATE=0.5 npm run dev
 ```
+
+## 14. Further improvements
+
+- feature flags
+
+  ```sh
+  npm install \
+    @openfeature/web-sdk \
+    @openfeature/flagd-provider
+  ```
+
+- run in docker
+
+  ```sh
+  # dockerfile
+  FROM node:22.17.1-alpine
+  WORKDIR /app
+  COPY package*.json ./
+  RUN npm ci
+  COPY . .
+  EXPOSE 3001 5173
+  CMD ["npm", "run", "dev"]
+  ```
