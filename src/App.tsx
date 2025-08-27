@@ -6,9 +6,11 @@ function App() {
   return (
     <ConfigProvider
       theme={{
+        cssVar: true,
         token: {
-          colorPrimary: "#91DBB6",
+          colorPrimary: "#52c41a",
           colorBgLayout: "#FEF9ED",
+          colorWarningText: "#52c41a",
         },
         algorithm: theme.defaultAlgorithm,
       }}

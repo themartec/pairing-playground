@@ -1,6 +1,12 @@
 import { Button, Form, Input, Layout } from "antd";
 import { useState } from "react";
 import StyledContent from "./LandingPage.styles";
+import A11yChallenge from "./challengeOneA11y/A11yChallenge";
+import CssChallenge from "./challengeTwoCss/CssChallenge";
+
+interface ViteImportMetaEnv {
+  [key: string]: any;
+}
 
 interface ResponseBody {
   success: boolean;
@@ -8,7 +14,20 @@ interface ResponseBody {
   submissionId?: number;
   data?: any;
 }
-export default function LandingPage() {
+
+interface LandingPageProps {
+  challengeOneEnabled?: boolean;
+  challengeTwoEnabled?: boolean;
+}
+
+export default function LandingPage({
+  challengeOneEnabled = Boolean(
+    (import.meta as ViteImportMetaEnv).env.VITE_CHALLENGE_ONE,
+  ),
+  challengeTwoEnabled = Boolean(
+    (import.meta as ViteImportMetaEnv).env.VITE_CHALLENGE_TWO,
+  ),
+}: LandingPageProps) {
   const [submitResponse, setSubmitResponse] = useState<ResponseBody | null>(
     null,
   );
@@ -29,6 +48,8 @@ export default function LandingPage() {
       <StyledContent>
         <h1>Pairing Playground</h1>
         <h2>This is where the magic happens</h2>
+        {challengeOneEnabled && <A11yChallenge data-testid="a11y-challenge" />}
+        {challengeTwoEnabled && <CssChallenge data-testid="css-challenge" />}
         {submitResponse && (
           <div data-testid="submit-response">
             <h3>Response:</h3>
@@ -54,3 +75,8 @@ export default function LandingPage() {
     </Layout>
   );
 }
+
+LandingPage.defaultProps = {
+  challengeOneEnabled: false,
+  challengeTwoEnabled: false,
+};

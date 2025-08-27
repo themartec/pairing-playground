@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { expect, describe, it, vi } from "vitest";
+import React from "react";
 import LandingPage from "./LandingPage";
 
 vi.mock("antd", () => vi.importActual("antd"));
@@ -20,16 +21,26 @@ describe("LandingPage", () => {
     expect(subtitle).toBeInTheDocument();
   });
 
+  describe("Conditional challenge rendering", () => {
+    it("renders A11yChallenge if challengeOneEnabled is true", () => {
+      const { queryByTestId } = render(<LandingPage challengeOneEnabled />);
+      expect(queryByTestId("a11y-challenge")).toBeInTheDocument();
+      expect(queryByTestId("css-challenge")).not.toBeInTheDocument();
+    });
+
+    it("renders CssChallenge if challengeTwoEnabled is true", () => {
+      const { queryByTestId } = render(<LandingPage challengeTwoEnabled />);
+      expect(queryByTestId("a11y-challenge")).not.toBeInTheDocument();
+      expect(queryByTestId("css-challenge")).toBeInTheDocument();
+    });
+  });
+
   describe("Form submission", () => {
     beforeEach(() => {
       global.fetch = vi.fn().mockResolvedValue({
         ok: true,
         json: async () => ({ message: "Fake response" }),
       });
-    });
-
-    afterEach(() => {
-      vi.restoreAllMocks();
     });
 
     it("calls onFinish and renders output on form submission", async () => {
@@ -43,7 +54,7 @@ describe("LandingPage", () => {
         const submitButton = screen.getByRole("button", { name: "Submit" });
 
         messageInput.value = "Test message";
-        submitButton.click();
+        await React.act(() => submitButton.click());
 
         expect(await screen.findByTestId("submit-response")).toHaveTextContent(
           "Fake response",

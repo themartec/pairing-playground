@@ -10,6 +10,7 @@ const dataSubmitHandler = async (req: any, res: any) => {
     message: "Form submitted successfully!",
     submissionId: submission.id,
     data: submission,
+    server: req.hostname,
   });
 };
 

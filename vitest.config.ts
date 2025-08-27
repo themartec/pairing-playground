@@ -19,7 +19,7 @@ export default defineConfig({
     coverage: {
       provider: "v8",
       exclude: [
-        "*.config.{ts,js}", // Excludes all config files
+        "*.config.{ts,mts,js,mjs}", // Excludes all config files
         ".*.{ts,js}", // Excludes all hidden files
         "**/*.styles.ts", // Excludes all style files
       ],

@@ -34,6 +34,13 @@ install:
 lint:
 	npm run lint
 
+.PHONY: find-conflict-lint-config
+find-conflict-lint-config:
+	@for i in $$(seq 1 $$(pwd | awk -F'/' '{print NF-1}')); do \
+		dirs=$$(printf '../%.0s' $$(seq 1 $$i)); \
+		find "$$dirs" -maxdepth 1 -type f -name "eslint.config.*"; \
+	done;
+
 .PHONY: format-check
 format-check:
 	npm run format:check
@@ -59,6 +66,38 @@ build: check install lint format-check test-unit test-a11y
 full-build: build test-e2e
 	@echo
 	@echo "✅ ${GREEN}Success${RESET} you are ready to ${BOLD}${MAGENTA}PAIR 🍐 🤘${RESET}\n"
+
+.PHONY: cloudflared-setup
+cloudflared-setup:
+	@brew --version >> /dev/null && \
+		brew install cloudflared || \
+		{ echo "${RED}❌ Couldn't detect Homebrew${RESET}"; exit 1; }
+	# requires $$CLOUDFLARED_KEY and sudo
+	sudo cloudflared service install "$${CLOUDFLARED_KEY}"
+	@cloudflared tunnel login
+	@cloudflared tunnel list --name the-martec
+
+.PHONY: cloudflared-test
+cloudflared-test:
+	@cloudflared tunnel list --name the-martec
+
+.PHONY: cloudflared-tail
+cloudflared-tail:
+	@echo "${GREEN}tailing a cloudflared tunnel named the-martec ... ${RESET}"
+	@export MARTEC_TUNNEL=$$( \
+		cloudflared tunnel list \
+			--name the-martec \
+			--output json | \
+			jq '.[].id'\
+		) && \
+		cloudflared tail $${MARTEC_TUNNEL}
+
+.PHONY: cloudflared-teardown
+cloudflared-teardown:
+	# requires $$CLOUDFLARED_KEY and sudo
+	sudo cloudflared service uninstall "$${CLOUDFLARED_KEY}"
+	@cloudflared tunnel login
+	@cloudflared tunnel list --name the-martec
 
 .PHONY: usage
 usage:
