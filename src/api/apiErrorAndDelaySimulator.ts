@@ -15,7 +15,7 @@ const apiErrorAndDelaySimulator = async (
 
     if (failureRate > 0 && Math.random() < failureRate) {
       // NOTE: helpful for API failure simulation
-      // eslint-disable-next-line no-console
+
       console.log("❌ Simulated API failure");
       return res.status(500).json({
         error: "Service temporarily unavailable",

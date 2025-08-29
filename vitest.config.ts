@@ -20,6 +20,7 @@ export default defineConfig({
       provider: "v8",
       exclude: [
         "*.config.{ts,mts,js,mjs}", // Excludes all config files
+        "**/*.d.*", // Excludes all declaration files
         ".*.{ts,js}", // Excludes all hidden files
         "**/*.styles.ts", // Excludes all style files
       ],

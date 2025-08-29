@@ -10,7 +10,7 @@ describe("apiErrorAndDelaySimulator", () => {
 
   beforeEach(() => {
     mockNext = vi.fn();
-    mockReq = { body: {}, url: "/api/test" } as any;
+    mockReq = { body: {}, url: "/api/test" } as Request;
     mockRes = { json: vi.fn(), status: vi.fn().mockReturnThis() } as any;
     consoleLogSpy = vi.spyOn(console, "log").mockImplementation(() => {});
   });
@@ -44,7 +44,7 @@ describe("apiErrorAndDelaySimulator", () => {
       const mockResConst = {
         json: vi.fn(),
         status: vi.fn().mockReturnThis(),
-      } as any;
+      } as Pick<Response, "json" | "status"> as Response;
       mockReq.url = "/api/submit";
       await apiErrorAndDelaySimulator(mockReq, mockResConst, mockNext);
 

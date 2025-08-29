@@ -1,6 +1,3 @@
-/* eslint-disable  */
-// NOTE: eslint disabled as part of Challenge I
-
 import { Flex, Image, Progress, Typography } from "antd";
 
 const contentStyle = {

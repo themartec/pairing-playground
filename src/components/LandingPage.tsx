@@ -4,15 +4,11 @@ import StyledContent from "./LandingPage.styles";
 import A11yChallenge from "./challengeOneA11y/A11yChallenge";
 import CssChallenge from "./challengeTwoCss/CssChallenge";
 
-interface ViteImportMetaEnv {
-  [key: string]: any;
-}
-
 interface ResponseBody {
   success: boolean;
   message: string;
   submissionId?: number;
-  data?: any;
+  data?: string;
 }
 
 interface LandingPageProps {
@@ -21,12 +17,8 @@ interface LandingPageProps {
 }
 
 export default function LandingPage({
-  challengeOneEnabled = Boolean(
-    (import.meta as ViteImportMetaEnv).env.VITE_CHALLENGE_ONE,
-  ),
-  challengeTwoEnabled = Boolean(
-    (import.meta as ViteImportMetaEnv).env.VITE_CHALLENGE_TWO,
-  ),
+  challengeOneEnabled = import.meta.env.VITE_CHALLENGE_ONE,
+  challengeTwoEnabled = import.meta.env.VITE_CHALLENGE_TWO,
 }: LandingPageProps) {
   const [submitResponse, setSubmitResponse] = useState<ResponseBody | null>(
     null,

@@ -11,7 +11,6 @@ cd pairing-playground
 nvm use
 make                # show usage instructions
 make full-build     # run full build including E2E tests
-                    # NOTE: check Debugging section below if you get errors
 ```
 
 NOTE: extra installation help that would be required for above
@@ -135,29 +134,6 @@ You will work with the file `src/components/LandingPage.tsx`.
 As mentioned in [Challenge IV](#challenge-iv---api-errors) you will have an
 error based on the `RATE` you set. Expand your code to always succeed through
 some kind of retry mechanism.
-
----
-
-## Debugging
-
-if you get an error like
-
-```sh
-  Oops! Something went wrong! :(
-
-  ESLint: 8.57.1
-
-  Error [ERR_MODULE_NOT_FOUND]: Cannot find package ...
-```
-
-You may have a conflicting `eslint.config.js` file in your `PATH`. You can
-check with the following command
-
-```sh
-make find-conflict-lint-config
-```
-
-simplest way around it, is to remove any conflicting `eslint.config.mjs` files.
 
 ---
 

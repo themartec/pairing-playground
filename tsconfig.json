@@ -22,7 +22,8 @@
     "playwright.config.ts",
     "vite.config.js",
     "vitest.config.ts",
-    ".eslintrc.js",
-    "tsconfig.json"
+    "eslint.config.mts",
+    "tsconfig.json",
+    "prettier.config.mts"
   ]
 }
